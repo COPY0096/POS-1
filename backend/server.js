@@ -9,13 +9,15 @@ const app = express();
 
 app.use(express.json());
 
+const PORT= process.env.PORT || 5000;
+
 app.use("/api/productos", productoRoutes);
 
 //console.log(process.env.MONGO_URI);
 
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
     connectDB();
-    console.log("Seridor iniciado en http://localhost:5000");
+    console.log("Seridor iniciado en http://localhost:" + PORT);
 });
 

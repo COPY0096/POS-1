@@ -1,4 +1,5 @@
 import Producto from "../models/producto.model.js";
+import mongoose from "mongoose";
 
 export const getProductos = async (req, res) => {
     try {
@@ -48,11 +49,15 @@ export const updateProducto = async (req, res) => {
 export const deleteProducto = async (req, res) => {
     const { id } = req.params;
 
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ success: false, message: "Id de Producto Invalido" }); 
+   }
+
     try {
         await Producto.findByIdAndDelete(id);
         res.status(200).json({ success: true, message: "Producto eliminado" });
     } catch (error) {
         console.error("Error al eliminar el producto:", error.message);
-        res.status(404).json({ success: false, message: "Producto no encontrado" });
+        res.status(500).json({ success: false, message: "Error del servidor" });
     }
 };
